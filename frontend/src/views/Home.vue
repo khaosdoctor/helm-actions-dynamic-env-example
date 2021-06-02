@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <h1>Welcome to the {{ projectName }} application</h1>
+    <h1>Welcome to the {{ projectName }} {{ projectVersion }} application</h1>
     <h4>Start by choosing one of the elements on the top menu</h4>
   </div>
 </template>
@@ -10,7 +10,8 @@ export default {
   name: 'Home',
   data () {
     return {
-      projectName: process.env.VUE_APP_PROJECT_TITLE
+      projectName: process.env.VUE_APP_PROJECT_TITLE,
+      projectVersion: `[${config.VUE_APP_PROJECT_VERSION}]` || ''
     }
   }
 }
