@@ -23,11 +23,11 @@ The application is divided into two main directories: `frontend` and `backend` e
 
 __Front End__: Created using Vim. Just go into the directory, type `npm install` to install all dependencies and then `npm run serve`. You can also build the image from the Dockerfile in the same directory
 
-__Front End__: Created with TypeScript. Just go into the directory, type `npm install` to install all dependencies and then `npm run build:start` to run the app or `npm run start:debug` to start in debug mode (tsc watch and logging). You can also build the image from the Dockerfile in the same directory
+__Front End__: Created with TypeScript. Just go into the directory, type `npm install` to install all dependencies and then `npm run build:start` to run the app or `npm run start:debug` to start in debug mode (TypeScript watch and logging). You can also build the image from the Dockerfile in the same directory
 
 #### Application hosted image
 
-There's a hosted image of this application available at the MCR (Microsoft Container Registry) in the following address: `mcr.microsoft.com/mslearn/samples/contoso-ship-manager`
+There's a hosted image of this application available at the MCR (Microsoft Container Registry) in the following address: `mcr.microsoft.com/mslearn/samples/contoso-ship-manager`, although this version contains some different features.
 
 You can pull this image using `docker pull` and run it locally using `docker run`.
 
