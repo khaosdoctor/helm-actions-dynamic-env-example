@@ -88,7 +88,6 @@ jobs:
             --install \
             --create-namespace \
             --atomic \
-            --wait \
             --namespace test-${{env.tag}} \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn="${{ secrets.DB_CONNECTION }}" \
