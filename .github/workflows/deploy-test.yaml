@@ -93,4 +93,4 @@ jobs:
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
             --set backend.ingress.hostname=ship-manager-backend-${{{env.GH_REF}}} \
             --set frontend.ingress.hostname=ship-manager-frontend-${{{env.GH_REF}}} \
-            --set imageTag=${{steps.tags.outputs.tag}}
+            --set global.imageTag=${{steps.tags.outputs.tag}}

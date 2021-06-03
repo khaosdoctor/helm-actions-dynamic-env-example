@@ -91,4 +91,4 @@ jobs:
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set imageTag=${{steps.tags.outputs.tag}}
+            --set global.imageTag=${{steps.tags.outputs.tag}}
