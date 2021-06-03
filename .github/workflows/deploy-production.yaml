@@ -7,7 +7,6 @@ on:
 
 env:
   IMAGE_NAME: ship-manager
-  GH_REF: ${GITHUB_REF/\/refs\/tags\//}
 
 jobs:
   build_push_image:
@@ -16,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set output
+      - name: Set env
         id: tags
         run: echo tag=${GITHUB_REF#refs/tags/} >> $GITHUB_ENV
 
@@ -63,6 +62,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Set env
+        id: tags
+        run: echo tag=${GITHUB_REF#refs/tags/} >> $GITHUB_ENV
 
       - name: Install Helm
         uses: Azure/setup-helm@v1
