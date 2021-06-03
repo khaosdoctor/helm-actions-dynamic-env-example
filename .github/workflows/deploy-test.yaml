@@ -8,7 +8,6 @@ on:
 
 env:
   IMAGE_NAME: ship-manager
-  GH_REF: ${GITHUB_REF/\/refs\/heads\//}
 
 jobs:
   build_push_image:
@@ -19,7 +18,7 @@ jobs:
 
       - name: Set env
         id: tags
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/heads/}
+        run: echo tag=${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v1
@@ -38,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${{steps.tags.outputs.tag}}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${{env.tag}}
           labels: |
             image.revision=${{github.sha}}
           file: frontend/Dockerfile
@@ -49,7 +48,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${{steps.tags.outputs.tag}}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${{env.tag}}
           labels: |
             image.revision=${{github.sha}}
           file: backend/Dockerfile
@@ -84,13 +83,13 @@ jobs:
             --create-namespace \
             --atomic \
             --wait \
-            --namespace test-${{steps.tags.outputs.tag}} \
+            --namespace test-${{env.tag}} \
             ship-manager \
             ./kubernetes/ship-manager \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
-            --set global.dbName=ship-manager-test-${{steps.tags.outputs.tag}} \
+            --set global.dbName=ship-manager-test-${{env.tag}} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set backend.ingress.hostname=ship-manager-backend-${{{env.GH_REF}}} \
-            --set frontend.ingress.hostname=ship-manager-frontend-${{{env.GH_REF}}} \
-            --set global.imageTag=${{steps.tags.outputs.tag}}
+            --set backend.ingress.hostname=ship-manager-backend-${{env.tag}} \
+            --set frontend.ingress.hostname=ship-manager-frontend-${{env.tag}} \
+            --set global.imageTag=${{env.tag}}

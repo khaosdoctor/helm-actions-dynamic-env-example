@@ -18,7 +18,7 @@ jobs:
 
       - name: Set output
         id: tags
-        run: echo ::set-output name=tag::${GITHUB_REF#refs/tags/}
+        run: echo tag=${GITHUB_REF#refs/tags/} >> $GITHUB_ENV
 
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v1
@@ -37,7 +37,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:${{steps.tags.outputs.tag}}
+          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:${{env.tag}}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -49,7 +49,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:${{steps.tags.outputs.tag}}
+          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:${{env.tag}}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -91,4 +91,4 @@ jobs:
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set global.imageTag=${{steps.tags.outputs.tag}}
+            --set global.imageTag=${{env.tag}}
