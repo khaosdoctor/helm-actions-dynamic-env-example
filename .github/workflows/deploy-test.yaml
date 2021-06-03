@@ -83,17 +83,17 @@ jobs:
       - name: Run Helm Deploy
         run: |
           helm upgrade \
+            ship-manager-${{env.tag}} \
+            ./kubernetes/ship-manager \
             --install \
             --create-namespace \
             --atomic \
             --wait \
             --namespace test-${{env.tag}} \
             --set global.registryName=${{ secrets.ACR_NAME }} \
-            --set global.dbConn=${{ secrets.DB_CONNECTION }} \
+            --set global.dbConn="${{ secrets.DB_CONNECTION }}" \
             --set global.dbName=ship-manager-test-${{env.tag}} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
             --set backend.ingress.hostname=ship-manager-backend-${{env.tag}} \
             --set frontend.ingress.hostname=ship-manager-frontend-${{env.tag}} \
-            --set global.imageTag=${{env.tag}} \
-            ship-manager-${{env.tag}} \
-            ./kubernetes/ship-manager
+            --set global.imageTag=${{env.tag}}
