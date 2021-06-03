@@ -88,12 +88,12 @@ jobs:
             --atomic \
             --wait \
             --namespace test-${{env.tag}} \
-            ship-manager \
-            ./kubernetes/ship-manager \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dbName=ship-manager-test-${{env.tag}} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
             --set backend.ingress.hostname=ship-manager-backend-${{env.tag}} \
             --set frontend.ingress.hostname=ship-manager-frontend-${{env.tag}} \
-            --set global.imageTag=${{env.tag}}
+            --set global.imageTag=${{env.tag}} \
+            ship-manager-${{env.tag}} \
+            ./kubernetes/ship-manager

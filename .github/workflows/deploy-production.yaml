@@ -89,9 +89,9 @@ jobs:
             --atomic \
             --wait \
             --namespace production \
-            ship-manager \
-            ./kubernetes/ship-manager \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set global.imageTag=${{env.tag}}
+            --set global.imageTag=${{env.tag}} \
+            ship-manager-prd \
+            ./kubernetes/ship-manager
