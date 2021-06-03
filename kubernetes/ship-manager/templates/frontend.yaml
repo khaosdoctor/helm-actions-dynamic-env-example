@@ -1,20 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: contoso-ship-manager-frontend
+  name: ship-manager-frontend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: contoso-ship-manager-frontend
+      app: ship-manager-frontend
+      env: {{ .Values.global.imageTag }}
   template:
     metadata:
       labels:
-        app: contoso-ship-manager-frontend
+        app: ship-manager-frontend
+        env: {{ .Values.global.imageTag }}
     spec:
       containers:
-        - image: mcr.microsoft.com/mslearn/samples/contoso-ship-manager:frontend
-          name: contoso-ship-manager-frontend
+        - image: {{ required "Registry is required" .Values.global.registryName }}/{{ required "Image name is required" .Values.frontend.imageName }}:{{ required "Image tag is required" .Values.global.imageTag }}
+          name: ship-manager-frontend
           resources:
             requests:
               cpu: 100m
@@ -37,10 +39,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: contoso-ship-manager-frontend
+  name: ship-manager-frontend
 spec:
   selector:
-    app: contoso-ship-manager-frontend
+    app: ship-manager-frontend
+    env: {{ .Values.global.imageTag }}
   ports:
     - name: http
       port: 80
@@ -49,17 +52,17 @@ spec:
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: contoso-ship-manager-frontend
+  name: ship-manager-frontend
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
   rules:
-    - host: contoso-ship-manager-frontend.03730aac165a459da35a.eastus.aksapp.io
+    - host: {{ default "ship-manager-frontend" .Values.frontend.ingress.hostname }}.{{ .Values.global.dnsZone }}
       http:
         paths:
           - path: /
             backend:
-              serviceName: contoso-ship-manager-frontend
+              serviceName: ship-manager-frontend
               servicePort: http
 ---
 apiVersion: v1
@@ -70,31 +73,7 @@ data:
   config.js: |
     const config = (() => {
       return {
-        'VUE_APP_BACKEND_BASE_URL': 'http://ship-manager-backend.03730aac165a459da35a.eastus.aksapp.io',
+        'VUE_APP_BACKEND_BASE_URL': 'http://{{ default "ship-manager-backend" .Values.backend.ingress.hostname }}.{{ .Values.global.dnsZone }}',
+        'VUE_APP_PROJECT_VERSION': '{{ .Values.global.imageTag }}'
       }
     })()
----
-apiVersion: autoscaling/v2beta2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: contoso-ship-manager-frontend
-spec:
-  maxReplicas: 8
-  minReplicas: 1
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: contoso-ship-manager-frontend
-  metrics:
-    - type: Resource
-      resource:
-        name: cpu
-        target:
-          type: Utilization
-          averageUtilization: 20
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          type: Utilization
-          averageUtilization: 35

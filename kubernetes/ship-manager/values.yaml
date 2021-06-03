@@ -1,0 +1,16 @@
+global:
+  registryName:
+  imageTag:
+  dbName: ship-manager
+  dbConn:
+  dnsZone:
+
+backend:
+  imageName: ship-manager-backend
+  ingress:
+    hostname:
+
+frontend:
+  imageName: ship-manager-frontend
+  ingress:
+    hostname:

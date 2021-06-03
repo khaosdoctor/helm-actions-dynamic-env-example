@@ -1,0 +1,4 @@
+apiVersion: v2
+name: backend
+description: Chart for the backend part of the ship manager app
+version: 0.1.0
