@@ -87,7 +87,6 @@ jobs:
             ./kubernetes/ship-manager \
             --install \
             --create-namespace \
-            --atomic \
             --namespace test-${{env.tag}} \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn="${{ secrets.DB_CONNECTION }}" \
