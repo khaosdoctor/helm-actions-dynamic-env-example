@@ -7,12 +7,10 @@ spec:
   selector:
     matchLabels:
       app: ship-manager-frontend
-      env: {{ .Values.global.imageTag }}
   template:
     metadata:
       labels:
         app: ship-manager-frontend
-        env: {{ .Values.global.imageTag }}
     spec:
       containers:
         - image: {{ required "Registry is required" .Values.global.registryName }}/{{ required "Image name is required" .Values.frontend.imageName }}:{{ required "Image tag is required" .Values.global.imageTag }}
@@ -43,7 +41,6 @@ metadata:
 spec:
   selector:
     app: ship-manager-frontend
-    env: {{ .Values.global.imageTag }}
   ports:
     - name: http
       port: 80
