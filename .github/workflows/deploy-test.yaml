@@ -34,7 +34,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${{env.GH_REF}}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${GITHUB_REF#refs/heads/}
           labels: |
             image.revision=${{github.sha}}
           file: frontend/Dockerfile
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${{env.GH_REF}}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${GITHUB_REF#refs/heads/}
           labels: |
             image.revision=${{github.sha}}
           file: backend/Dockerfile
@@ -80,13 +80,13 @@ jobs:
             --create-namespace \
             --atomic \
             --wait \
-            --namespace test-${{env.GH_REF}} \
+            --namespace test-${GITHUB_REF#refs/heads/} \
             ship-manager \
             ./kubernetes/ship-manager \
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
-            --set global.dbName=ship-manager-test-${{env.GH_REF}} \
+            --set global.dbName=ship-manager-test-${GITHUB_REF#refs/heads/} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
             --set backend.ingress.hostname=ship-manager-backend-${{{env.GH_REF}}} \
             --set frontend.ingress.hostname=ship-manager-frontend-${{{env.GH_REF}}} \
-            --set imageTag=${{env.GH_REF}}
+            --set imageTag=${GITHUB_REF#refs/heads/}

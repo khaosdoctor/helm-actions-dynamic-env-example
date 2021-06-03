@@ -33,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ env.IMAGE_NAME }}-frontend:latest,${{ env.IMAGE_NAME }}-frontend:${{env.GH_REF}}
+          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-frontend:${GITHUB_REF#refs/tags/}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -45,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ env.IMAGE_NAME }}-backend:latest,${{ env.IMAGE_NAME }}-backend:${{env.GH_REF}}
+          tags: ${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:latest,${{secrets.ACR_NAME}}/${{ env.IMAGE_NAME }}-backend:${GITHUB_REF#refs/tags/}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -87,4 +87,4 @@ jobs:
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set imageTag=${{env.GH_REF}}
+            --set imageTag=${GITHUB_REF#refs/tags/}
