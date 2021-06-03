@@ -7,6 +7,7 @@ on:
 
 env:
   IMAGE_NAME: ship-manager
+  GH_REF: ${GITHUB_REF/\/refs\/tags\//}
 
 jobs:
   build_push_image:
@@ -32,7 +33,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:latest,${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${GITHUB_REF#refs/tags/}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:latest,${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-frontend:${env.GH_REF}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -44,7 +45,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           # Docker repository to tag the image with
-          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:latest,${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${GITHUB_REF#refs/tags/}
+          tags: ${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:latest,${{ secrets.ACR_NAME }}/${{ env.IMAGE_NAME }}-backend:${env.GH_REF}
           labels: |
             image.revision=${{github.sha}}
             image.release=${{github.ref}}
@@ -86,4 +87,4 @@ jobs:
             --set global.registryName=${{ secrets.ACR_NAME }} \
             --set global.dbConn=${{ secrets.DB_CONNECTION }} \
             --set global.dnsZone=${{ secrets.DNS_NAME }} \
-            --set imageTag=${GITHUB_REF#refs/tags/}
+            --set imageTag=${env.GH_REF}
