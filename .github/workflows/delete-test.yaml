@@ -36,4 +36,4 @@ jobs:
 
       - name: Run Helm Delete
         run: |
-          helm delete ship-manager-${{env.tag}}
+          helm delete --namespace test-${{env.tag}} ship-manager-${{env.tag}}
