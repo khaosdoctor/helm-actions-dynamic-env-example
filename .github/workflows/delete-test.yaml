@@ -7,9 +7,6 @@ on:
       - 'main'
       - 'master'
 
-env:
-  IMAGE_NAME: ship-manager
-
 jobs:
   delete:
     runs-on: ubuntu-20.04
@@ -19,7 +16,9 @@ jobs:
 
       - name: Set env
         id: tags
-        run: echo tag=${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
+        run: |
+          export REF=${{github.event.ref}}
+          echo tag=${REF#refs/heads/} >> $GITHUB_ENV
 
       - name: Install Helm
         uses: Azure/setup-helm@v1
