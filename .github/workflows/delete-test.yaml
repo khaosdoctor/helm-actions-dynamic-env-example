@@ -1,6 +1,7 @@
 name: Auto remove created environments upon branch deletion
 
 on:
+  workflow_dispatch:
   delete:
     branches-ignore:
       - 'main'
