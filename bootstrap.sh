@@ -6,9 +6,9 @@ then
   exit 1
 fi
 
-RG="ship-manager-pipeline-6"
-RESOURCENAME="ship-manager6"
-ACR="shipmanager6"
+RG="ship-manager-pipeline"
+RESOURCENAME="ship-manager"
+ACR="shipmanager"
 
 set -x
 
