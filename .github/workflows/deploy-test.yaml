@@ -64,7 +64,7 @@ jobs:
 
       - name: Set env
         id: tags
-        run: echo tag=${GITHUB_REF#refs/tags/} >> $GITHUB_ENV
+        run: echo tag=${GITHUB_REF#refs/heads/} >> $GITHUB_ENV
 
       - name: Install Helm
         uses: Azure/setup-helm@v1
