@@ -35,7 +35,7 @@ AZURE_CREDENTIALS=$(az ad sp create-for-rbac --sdk-auth)
 DB_CONNECTION=$(az cosmosdb keys list -n $RESOURCENAME -g $RG --type connection-strings --query "connectionStrings[0].connectionString")
 DNS_NAME=$(az aks show -n $RESOURCENAME -g $RG --query "addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName")
 
-printf "\n\n\n### Resource creation successful, please note these variables as you'll need them to finish the setup: ###\n\n\n"
+printf "\n\n\n### Resource creation successful, please NOTE these variables as YOU'LL NEED THEM TO FINISH THE SETUP: ###\n\n\n"
 printf ">> Azure Container Registry Password: %s (username is the name of the ACR)\n" "$ACR_PASSWORD"
 printf ">> DB Connection String: %s\n" "$DB_CONNECTION"
 printf ">> AKS DNS Zone: %s\n" "$DNS_NAME"
