@@ -37,3 +37,4 @@ jobs:
       - name: Run Helm Delete
         run: |
           helm delete --namespace test-${{env.tag}} ship-manager-${{env.tag}}
+          kubectl delete ns test-${{env.tag}}
